@@ -40,94 +40,111 @@ namespace WindowsFormsApp1
        
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private byte[] getOriginalFileStream(string filePath)
         {
-           string pathSource = @"C:\Testing\LearningSystem\Original.mp4";
-           string pathEncrypt = @"C:\Testing\LearningSystem\Encrypt.mp4";
-           string pathDecrypt = @"C:\Testing\LearningSystem\Decrypt.mp4";
+            long fileLength = 0;
+            byte[] originalByteArray;
 
-           using (FileStream fsSource = new FileStream(pathSource, FileMode.Open, FileAccess.Read))
-           {
-                #region 取得原始資料
-                //string source = "ELearning system";
-                //byte[] dataByteArray = Encoding.UTF8.GetBytes(source);
-                var fileLength = fsSource.Length;
-                byte[] originalByteArray = new byte[fileLength];
+            using (FileStream fsSource = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+            {
+                fileLength = fsSource.Length;
+                originalByteArray = new byte[fileLength];
 
                 int numBytesToRead = (int)fsSource.Length;
                 int numBytesRead = 0;
                 while (numBytesToRead > 0)
                 {
-                    // Read may return anything from 0 to numBytesToRead.
-                    int n = fsSource.Read(originalByteArray, numBytesRead, numBytesToRead);
-
-                    // Break when the end of the file is reached.
-                    if (n == 0)
+                    int n = fsSource.Read(originalByteArray, numBytesRead, numBytesToRead);    // Read may return anything from 0 to numBytesToRead.
+                    if (n == 0)  // Break when the end of the file is reached.
                         break;
-
                     numBytesRead += n;
                     numBytesToRead -= n;
                 }
                 numBytesToRead = originalByteArray.Length;
-                #endregion 取得原始資料
-
-                #region 加解密 key
-                DESCryptoServiceProvider des = new DESCryptoServiceProvider();
-                byte[] key = Encoding.ASCII.GetBytes("12345678");
-                byte[] iv = Encoding.ASCII.GetBytes("87654321");
-                des.Key = key;
-                des.IV = iv;
-                #endregion 加解密 key
-
-                #region 加密
-                string encrypt = "";
-                byte[] encryptByteArray = new byte[fileLength];
-
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    using (CryptoStream cs = new CryptoStream(ms, des.CreateEncryptor(), CryptoStreamMode.Write))
-                    {
-                        cs.Write(originalByteArray, 0, originalByteArray.Length);
-                        cs.FlushFinalBlock();
-                        encrypt = Convert.ToBase64String(ms.ToArray());
-                        encryptByteArray = Convert.FromBase64String(encrypt);
-                    }
-                }
-
-                using (FileStream fsNew = new FileStream(pathEncrypt,
-                     FileMode.Create, FileAccess.Write))
-                {
-                    fsNew.Write(encryptByteArray, 0, numBytesToRead);
-                }
-
-
-                #endregion 加密
-
-                #region 解密
-                string decrypt = "";
-                byte[] decryptByteArray = new byte[fileLength];
-                des.Key = Encoding.ASCII.GetBytes("12345678");
-                des.IV = Encoding.ASCII.GetBytes("87654321");
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    using (CryptoStream cs = new CryptoStream(ms, des.CreateDecryptor(), CryptoStreamMode.Write))
-                    {
-                        cs.Write(encryptByteArray, 0, encryptByteArray.Length);
-                        cs.FlushFinalBlock();
-                        decrypt = Encoding.UTF8.GetString(ms.ToArray());
-                        decryptByteArray = ms.ToArray();
-                    }
-                }
-
-                using (FileStream fsNew = new FileStream(pathDecrypt,
-                   FileMode.Create, FileAccess.Write))
-                {
-                    fsNew.Write(decryptByteArray, 0, numBytesToRead);
-                }
-
-                #endregion 解密
             }
+
+            return originalByteArray;
         }
+
+        private byte[] writeEncryptFile(byte[] source, string pathEncrypt)
+        {
+            #region 加解密 key
+            DESCryptoServiceProvider des = new DESCryptoServiceProvider();
+            byte[] key = Encoding.ASCII.GetBytes("12345678");
+            byte[] iv = Encoding.ASCII.GetBytes("87654321");
+            des.Key = key;
+            des.IV = iv;
+            #endregion 加解密 key
+
+            #region 加密
+            int fileLength = source.Length;
+
+            string encrypt = "";
+            byte[] encryptByteArray = new byte[fileLength];
+
+            using (MemoryStream ms = new MemoryStream())
+            {
+                using (CryptoStream cs = new CryptoStream(ms, des.CreateEncryptor(), CryptoStreamMode.Write))
+                {
+                    cs.Write(source, 0, source.Length);
+                    cs.FlushFinalBlock();
+                    encrypt = Convert.ToBase64String(ms.ToArray());
+                    encryptByteArray = Convert.FromBase64String(encrypt);
+                }
+            }
+
+            using (FileStream fsNew = new FileStream(pathEncrypt,
+                    FileMode.Create, FileAccess.Write))
+            {
+                fsNew.Write(encryptByteArray, 0, (int)fileLength);
+            }
+            #endregion 加密
+            return encryptByteArray;
+        }
+
+        private void button_genEnDescriptFile(object sender, EventArgs e)
+        {
+            string pathSource = @"C:\Testing\LearningSystem\Original.mp4";
+            byte[] originalByteArray = getOriginalFileStream(pathSource);
+
+            string pathEncrypt = @"C:\Testing\LearningSystem\Encrypt.mp4";
+            var encryptByteArray = writeEncryptFile(originalByteArray, pathEncrypt);
+
+
+            long fileLength = originalByteArray.Length;
+            string pathDecrypt = @"C:\Testing\LearningSystem\Decrypt.mp4";
+
+            #region 加解密 key
+            DESCryptoServiceProvider des = new DESCryptoServiceProvider();
+            byte[] key = Encoding.ASCII.GetBytes("12345678");
+            byte[] iv = Encoding.ASCII.GetBytes("87654321");
+            des.Key = key;
+            des.IV = iv;
+            #endregion 加解密 key
+
+            //#region 解密
+            byte[] decryptByteArray = new byte[fileLength];
+            des.Key = Encoding.ASCII.GetBytes("12345678");
+            des.IV = Encoding.ASCII.GetBytes("87654321");
+            using (MemoryStream ms = new MemoryStream())
+            {
+                using (CryptoStream cs = new CryptoStream(ms, des.CreateDecryptor(), CryptoStreamMode.Write))
+                {
+                    cs.Write(encryptByteArray, 0, encryptByteArray.Length);
+                    cs.FlushFinalBlock();
+                    decryptByteArray = ms.ToArray();
+                }
+            }
+
+            using (FileStream fsNew = new FileStream(pathDecrypt,
+                FileMode.Create, FileAccess.Write))
+            {
+                fsNew.Write(decryptByteArray, 0, (int)fileLength);
+            }
+
+            //#endregion 解密
+        }
+        
 
         private void button2_Click(object sender, EventArgs e)
         {
