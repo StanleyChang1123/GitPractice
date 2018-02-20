@@ -9,6 +9,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WindowsFormsApp1.Model;
 using WindowsFormsApp1.Service;
 
 namespace WindowsFormsApp1
@@ -18,7 +19,29 @@ namespace WindowsFormsApp1
         public Form1()
         {
             InitializeComponent();
+            InitialUIData();     
         }
+
+        #region Initial UI Data
+        private void InitialUIData()
+        {
+            var courses = initialCourseList();
+            foreach (DropDownListCourse course in courses)
+            {
+                comboBoxForCourse.Items.Add(course);
+            }
+            comboBoxForCourse.SelectedIndex = 0;
+        }
+        private IList<DropDownListCourse> initialCourseList()
+        {
+            return getInitialCourse().Select(x => new DropDownListCourse() { DataName = x.Name, DataValue = x.Chapter }).ToList();
+        }
+        private IList<CourseModel> getInitialCourse()
+        {
+            return new CourseService().GetCourse(1);
+        }
+        #endregion Initial UI Data
+
 
         private void axWindowsMediaPlayer1_Enter(object sender, EventArgs e)
         {
@@ -46,7 +69,7 @@ namespace WindowsFormsApp1
 
         private void button_DecryptAndPlay_Click(object sender, EventArgs e)
         {
-            string encryptFilePath = string.Format(@"C:\Testing\LearningSystem\{0}-encrypt.mp4", tB_FileName.Text);
+            string encryptFilePath = string.Format(@"C:\Testing\LearningSystem\{0}-encrypt.mp4", comboBoxForCourse.Text);
             string decryptFilePath = @"C:\Testing\LearningSystem\Decrypt.mp4";
 
             using (FileStream encryptStream = new FileStream(encryptFilePath, FileMode.Open, FileAccess.Read))

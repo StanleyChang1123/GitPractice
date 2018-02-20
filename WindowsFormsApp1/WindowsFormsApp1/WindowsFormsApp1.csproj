@@ -79,7 +79,10 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Model\FileTransfer.cs" />
+    <Compile Include="Model\CourseModel.cs" />
+    <Compile Include="Model\ViewModel\DropDownListCourse.cs" />
+    <Compile Include="Service\CourseService.cs" />
+    <Compile Include="Service\FileTransfer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
