@@ -15,31 +15,14 @@ namespace WindowsFormsApp1
 {
     public partial class Form1 : Form
     {
-        #region TryAgain
-
-        #endregion TryAgain
-
-
-
-        Dictionary<string, int> mappingFileNameLengh;
-
         public Form1()
         {
             InitializeComponent();
-            //mappingFileNameLengh = RetrieveFileNameLengthMappingFromDB();
-
         }
 
-        private Dictionary<string, int> RetrieveFileNameLengthMappingFromDB()
-        {
-            return new Dictionary<string, int>()  //future from DB
-            {
-                { "1-1", 2730297 }, { "1-2", 2730297 }
-            };
-        }
-      
-        //看到底哪邊不同
-
+        /*
+        #region Past 
+        
         private void button_genEncryptFile(object sender, EventArgs e)
         {
             string pathSource = @"C:\Testing\LearningSystem\"  + textBox_EncryptFile.Text +   ".mp4";
@@ -50,7 +33,7 @@ namespace WindowsFormsApp1
 
 
              string pathDecrypt = @"C:\Testing\LearningSystem\Decrypt.mp4";
-              writeDecryptFile(encryptByteArray, originalByteArray.Length, pathDecrypt);  //需要original byteArray
+             writeDecryptFile(encryptByteArray, originalByteArray.Length, pathDecrypt);  //需要original byteArray
         }
 
         private void button_playFile_Click(object sender, EventArgs e)
@@ -65,13 +48,9 @@ namespace WindowsFormsApp1
             writeDecryptFile(byteArrayToDecrypt, originalFilebyteLength, pathDecrypt);  
 
         }
+ 
 
-
-       
-
-        private void axWindowsMediaPlayer1_Enter(object sender, EventArgs e)
-        {
-        }
+        
 
         private byte[] getOriginalFileStream(string filePath)
         {
@@ -149,6 +128,11 @@ namespace WindowsFormsApp1
             }
         }
 
+        #endregion Past 
+        */
+        private void axWindowsMediaPlayer1_Enter(object sender, EventArgs e)
+        {
+        }
 
         private void button_EncryptSource_Click(object sender, EventArgs e)
         {
@@ -174,6 +158,33 @@ namespace WindowsFormsApp1
 
             tB_Encrypt.Text = encrypt;
         }
+
+        private void button_DecryptAndPlay_Click(object sender, EventArgs e)
+        {
+            DESCryptoServiceProvider des = new DESCryptoServiceProvider();
+            byte[] key = Encoding.ASCII.GetBytes("12345678");
+            byte[] iv = Encoding.ASCII.GetBytes("87654321");
+            des.Key = key;
+            des.IV = iv;
+
+            string encryptFilePath = @"C:\Testing\LearningSystem\" + tB_FileName.Text + "-encrypt.mp4";
+            string decryptFilePath = @"C:\Testing\LearningSystem\Decrypt.mp4";
+
+            using (FileStream encryptStream = new FileStream(encryptFilePath, FileMode.Open, FileAccess.Read))
+            using (FileStream decryptStream = new FileStream(decryptFilePath, FileMode.Create, FileAccess.Write))
+            {
+                byte[] dataByteArray = new byte[encryptStream.Length];
+                encryptStream.Read(dataByteArray, 0, dataByteArray.Length);
+                using (CryptoStream cs = new CryptoStream(decryptStream, des.CreateDecryptor(), CryptoStreamMode.Write))
+                {
+                    cs.Write(dataByteArray, 0, dataByteArray.Length);
+                    cs.FlushFinalBlock();
+                }
+            }
+
+            axWindowsMediaPlayer1.URL = decryptFilePath;
+        }
+
 
         private void button_Decrypt_Click(object sender, EventArgs e)
         {
@@ -203,8 +214,8 @@ namespace WindowsFormsApp1
 
         private void button_EncryptFile_Click(object sender, EventArgs e)
         {
-            string sourceFilePath  = @"C:\Testing\LearningSystem\1-1.mp4";
-            string encryptFilePath = @"C:\Testing\LearningSystem\1-1-encrypt.mp4";
+            string sourceFilePath  = @"C:\Testing\LearningSystem\" + tB_FileName.Text  + ".mp4";
+            string encryptFilePath = @"C:\Testing\LearningSystem\" + tB_FileName.Text + "-encrypt.mp4";
 
             DESCryptoServiceProvider des = new DESCryptoServiceProvider();
             byte[] key = Encoding.ASCII.GetBytes("12345678");
@@ -251,6 +262,8 @@ namespace WindowsFormsApp1
                 }
             }
         }
+
+       
 
 
 
