@@ -20,20 +20,15 @@ namespace WindowsFormsApp1
             InitializeComponent();
         }
 
-        private void button_genEnDecryptFile(object sender, EventArgs e)
+        private void button_genEncryptFile(object sender, EventArgs e)
         {
-            string pathSource = @"C:\Testing\LearningSystem\Original.mp4";
+            string pathSource = @"C:\Testing\LearningSystem\Video"+ textBox_EncryptFile.Text + ".mp4";
             byte[] originalByteArray = getOriginalFileStream(pathSource);
 
-            string pathEncrypt = @"C:\Testing\LearningSystem\Encrypt.mp4";
+            string pathEncrypt = @"C:\Testing\LearningSystem\EVideo" + textBox_EncryptFile.Text +  ".mp4";
             var encryptByteArray = writeEncryptFile(originalByteArray, pathEncrypt);
-
-            string pathDecrypt = @"C:\Testing\LearningSystem\Decrypt.mp4";
+            string pathDecrypt = @"C:\Testing\LearningSystem\DVideo" + textBox_EncryptFile.Text + ".mp4";
             writeDecryptFile(encryptByteArray, originalByteArray.Length, pathDecrypt);
-        }
-
-        private void axWindowsMediaPlayer1_Enter(object sender, EventArgs e)
-        {
         }
 
         private byte[] getOriginalFileStream(string filePath)
@@ -89,6 +84,20 @@ namespace WindowsFormsApp1
             return encryptByteArray;
         }
 
+       
+        private void button_PlayFile(object sender, EventArgs e)
+        {
+            //string pathSource = @"C:\Testing\LearningSystem\EVideo" + textBox_FileName.Text + ".mp4";
+            //byte[] encryptByteArray = getOriginalFileStream(pathSource);
+
+            //string pathDecrypt = @"C:\Testing\LearningSystem\Video" + textBox_FileName.Text + ".mp4";
+            //writeDecryptFile(encryptByteArray, encryptByteArray.Length + 7, pathDecrypt);
+
+            //axWindowsMediaPlayer1.URL = pathDecrypt;
+        }
+
+
+
         private void writeDecryptFile(byte[] encrypt, int originalFileLength, string pathDecrypt)
         {
             //#region 解密
@@ -112,14 +121,9 @@ namespace WindowsFormsApp1
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            axWindowsMediaPlayer1.URL = @"C:\Testing\LearningSystem\Encrypt.mp4";
-        }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void axWindowsMediaPlayer1_Enter(object sender, EventArgs e)
         {
-            axWindowsMediaPlayer1.URL = @"C:\Testing\LearningSystem\Decrypt.mp4";
         }
     }
 }
