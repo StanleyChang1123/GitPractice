@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
 
-namespace WindowsFormsApp1.Model
+namespace WindowsFormsApp1.Service
 {
     class FileTransfer
     {
