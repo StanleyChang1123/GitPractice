@@ -9,6 +9,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WindowsFormsApp1.Model;
 
 namespace WindowsFormsApp1
 {
@@ -19,25 +20,20 @@ namespace WindowsFormsApp1
             InitializeComponent();
         }
 
+        private void button_genEnDecryptFile(object sender, EventArgs e)
+        {
+            string pathSource = @"C:\Testing\LearningSystem\Original.mp4";
+            byte[] originalByteArray = getOriginalFileStream(pathSource);
+
+            string pathEncrypt = @"C:\Testing\LearningSystem\Encrypt.mp4";
+            var encryptByteArray = writeEncryptFile(originalByteArray, pathEncrypt);
+
+            string pathDecrypt = @"C:\Testing\LearningSystem\Decrypt.mp4";
+            writeDecryptFile(encryptByteArray, originalByteArray.Length, pathDecrypt);
+        }
+
         private void axWindowsMediaPlayer1_Enter(object sender, EventArgs e)
         {
-            //Stanley add
-            //try
-            //{
-
-            //}
-            //catch (Exception ee)
-            //{
-            //    var a = ee;
-            //    var b = 1;
-            ////}
-            //if (axWindowsMediaPlayer1.playState == WMPLib.WMPPlayState.wmppsPlaying)
-            //{
-            //    axWindowsMediaPlayer1.fullScreen = true;
-            //}
-
-            //axWindowsMediaPlayer1.URL = @"C:\Users\iphon\Desktop\Gmail\Hu.mp4";
-       
         }
 
         private byte[] getOriginalFileStream(string filePath)
@@ -68,28 +64,19 @@ namespace WindowsFormsApp1
 
         private byte[] writeEncryptFile(byte[] source, string pathEncrypt)
         {
-            #region 加解密 key
-            DESCryptoServiceProvider des = new DESCryptoServiceProvider();
-            byte[] key = Encoding.ASCII.GetBytes("12345678");
-            byte[] iv = Encoding.ASCII.GetBytes("87654321");
-            des.Key = key;
-            des.IV = iv;
-            #endregion 加解密 key
+            FileTransfer ft = new FileTransfer();
 
             #region 加密
             int fileLength = source.Length;
-
-            string encrypt = "";
             byte[] encryptByteArray = new byte[fileLength];
 
             using (MemoryStream ms = new MemoryStream())
             {
-                using (CryptoStream cs = new CryptoStream(ms, des.CreateEncryptor(), CryptoStreamMode.Write))
+                using (CryptoStream cs = new CryptoStream(ms, ft.getEncryptor(), CryptoStreamMode.Write))
                 {
                     cs.Write(source, 0, source.Length);
                     cs.FlushFinalBlock();
-                    encrypt = Convert.ToBase64String(ms.ToArray());
-                    encryptByteArray = Convert.FromBase64String(encrypt);
+                    encryptByteArray = ms.ToArray();
                 }
             }
 
@@ -104,21 +91,13 @@ namespace WindowsFormsApp1
 
         private void writeDecryptFile(byte[] encrypt, int originalFileLength, string pathDecrypt)
         {
-            #region 加解密 key
-            DESCryptoServiceProvider des = new DESCryptoServiceProvider();
-            byte[] key = Encoding.ASCII.GetBytes("12345678");
-            byte[] iv = Encoding.ASCII.GetBytes("87654321");
-            des.Key = key;
-            des.IV = iv;
-            #endregion 加解密 key
-
             //#region 解密
+            FileTransfer ft = new FileTransfer();
+
             byte[] decryptByteArray = new byte[originalFileLength];
-            des.Key = Encoding.ASCII.GetBytes("12345678");
-            des.IV = Encoding.ASCII.GetBytes("87654321");
             using (MemoryStream ms = new MemoryStream())
             {
-                using (CryptoStream cs = new CryptoStream(ms, des.CreateDecryptor(), CryptoStreamMode.Write))
+                using (CryptoStream cs = new CryptoStream(ms, ft.getDecryptor(), CryptoStreamMode.Write))
                 {
                     cs.Write(encrypt, 0, encrypt.Length);
                     cs.FlushFinalBlock();
@@ -133,31 +112,9 @@ namespace WindowsFormsApp1
             }
         }
 
-        private void button_genEnDecryptFile(object sender, EventArgs e)
-        {
-            string pathSource = @"C:\Testing\LearningSystem\Original.mp4";
-            byte[] originalByteArray = getOriginalFileStream(pathSource);
-
-            string pathEncrypt = @"C:\Testing\LearningSystem\Encrypt.mp4";
-            var encryptByteArray = writeEncryptFile(originalByteArray, pathEncrypt);
-            string pathDecrypt = @"C:\Testing\LearningSystem\Decrypt.mp4";
-
-            writeDecryptFile(encryptByteArray, originalByteArray.Length, pathDecrypt);
-
-            //long fileLength = originalByteArray.Length;
-          
-
-
-          
-
-            //#endregion 解密
-        }
-        
-
         private void button2_Click(object sender, EventArgs e)
         {
             axWindowsMediaPlayer1.URL = @"C:\Testing\LearningSystem\Encrypt.mp4";
-            
         }
 
         private void button3_Click(object sender, EventArgs e)
