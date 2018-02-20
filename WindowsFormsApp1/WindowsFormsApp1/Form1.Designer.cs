@@ -30,9 +30,18 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.axWindowsMediaPlayer1 = new AxWMPLib.AxWindowsMediaPlayer();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
+            this.button_Encrypt = new System.Windows.Forms.Button();
+            this.button_playFile = new System.Windows.Forms.Button();
+            this.textBox_playFile = new System.Windows.Forms.TextBox();
+            this.textBox_EncryptFile = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.tB_Source = new System.Windows.Forms.TextBox();
+            this.button_EncryptSource = new System.Windows.Forms.Button();
+            this.tB_Encrypt = new System.Windows.Forms.TextBox();
+            this.button_Decrypt = new System.Windows.Forms.Button();
+            this.tB_Decrypt = new System.Windows.Forms.TextBox();
+            this.button_EncryptFile = new System.Windows.Forms.Button();
+            this.button_DecryptFile = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -46,58 +55,151 @@
             this.axWindowsMediaPlayer1.TabIndex = 0;
             this.axWindowsMediaPlayer1.Enter += new System.EventHandler(this.axWindowsMediaPlayer1_Enter);
             // 
-            // button1
+            // button_Encrypt
             // 
-            this.button1.Location = new System.Drawing.Point(26, 46);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(170, 23);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "Encrypt and decrypt file";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button_genEnDecryptFile);
+            this.button_Encrypt.Location = new System.Drawing.Point(12, 46);
+            this.button_Encrypt.Name = "button_Encrypt";
+            this.button_Encrypt.Size = new System.Drawing.Size(170, 23);
+            this.button_Encrypt.TabIndex = 1;
+            this.button_Encrypt.Text = "Encrypt";
+            this.button_Encrypt.UseVisualStyleBackColor = true;
+            this.button_Encrypt.Click += new System.EventHandler(this.button_genEncryptFile);
             // 
-            // button2
+            // button_playFile
             // 
-            this.button2.Location = new System.Drawing.Point(226, 46);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(122, 23);
-            this.button2.TabIndex = 2;
-            this.button2.Text = "Play Encrypt File";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.button_playFile.Location = new System.Drawing.Point(333, 47);
+            this.button_playFile.Name = "button_playFile";
+            this.button_playFile.Size = new System.Drawing.Size(75, 23);
+            this.button_playFile.TabIndex = 5;
+            this.button_playFile.Text = "Play file";
+            this.button_playFile.Click += new System.EventHandler(this.button_playFile_Click);
             // 
-            // button3
+            // textBox_playFile
             // 
-            this.button3.Location = new System.Drawing.Point(375, 46);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(102, 23);
-            this.button3.TabIndex = 3;
-            this.button3.Text = "Play Decrypt File";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.textBox_playFile.Location = new System.Drawing.Point(414, 47);
+            this.textBox_playFile.Name = "textBox_playFile";
+            this.textBox_playFile.Size = new System.Drawing.Size(100, 22);
+            this.textBox_playFile.TabIndex = 3;
+            // 
+            // textBox_EncryptFile
+            // 
+            this.textBox_EncryptFile.Location = new System.Drawing.Point(188, 47);
+            this.textBox_EncryptFile.Name = "textBox_EncryptFile";
+            this.textBox_EncryptFile.Size = new System.Drawing.Size(100, 22);
+            this.textBox_EncryptFile.TabIndex = 4;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(795, 93);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(37, 12);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "Source";
+            // 
+            // tB_Source
+            // 
+            this.tB_Source.Location = new System.Drawing.Point(853, 83);
+            this.tB_Source.Name = "tB_Source";
+            this.tB_Source.Size = new System.Drawing.Size(100, 22);
+            this.tB_Source.TabIndex = 7;
+            this.tB_Source.Text = "Hello";
+            // 
+            // button_EncryptSource
+            // 
+            this.button_EncryptSource.Location = new System.Drawing.Point(788, 117);
+            this.button_EncryptSource.Name = "button_EncryptSource";
+            this.button_EncryptSource.Size = new System.Drawing.Size(75, 23);
+            this.button_EncryptSource.TabIndex = 8;
+            this.button_EncryptSource.Text = "Encrypt";
+            this.button_EncryptSource.UseVisualStyleBackColor = true;
+            this.button_EncryptSource.Click += new System.EventHandler(this.button_EncryptSource_Click);
+            // 
+            // tB_Encrypt
+            // 
+            this.tB_Encrypt.Location = new System.Drawing.Point(869, 118);
+            this.tB_Encrypt.Name = "tB_Encrypt";
+            this.tB_Encrypt.Size = new System.Drawing.Size(97, 22);
+            this.tB_Encrypt.TabIndex = 9;
+            // 
+            // button_Decrypt
+            // 
+            this.button_Decrypt.Location = new System.Drawing.Point(788, 148);
+            this.button_Decrypt.Name = "button_Decrypt";
+            this.button_Decrypt.Size = new System.Drawing.Size(75, 23);
+            this.button_Decrypt.TabIndex = 10;
+            this.button_Decrypt.Text = "Decrypt";
+            this.button_Decrypt.UseVisualStyleBackColor = true;
+            this.button_Decrypt.Click += new System.EventHandler(this.button_Decrypt_Click);
+            // 
+            // tB_Decrypt
+            // 
+            this.tB_Decrypt.Location = new System.Drawing.Point(869, 150);
+            this.tB_Decrypt.Name = "tB_Decrypt";
+            this.tB_Decrypt.Size = new System.Drawing.Size(100, 22);
+            this.tB_Decrypt.TabIndex = 11;
+            // 
+            // button_EncryptFile
+            // 
+            this.button_EncryptFile.Location = new System.Drawing.Point(800, 219);
+            this.button_EncryptFile.Name = "button_EncryptFile";
+            this.button_EncryptFile.Size = new System.Drawing.Size(75, 23);
+            this.button_EncryptFile.TabIndex = 12;
+            this.button_EncryptFile.Text = "Encrypt File";
+            this.button_EncryptFile.UseVisualStyleBackColor = true;
+            this.button_EncryptFile.Click += new System.EventHandler(this.button_EncryptFile_Click);
+            // 
+            // button_DecryptFile
+            // 
+            this.button_DecryptFile.Location = new System.Drawing.Point(800, 248);
+            this.button_DecryptFile.Name = "button_DecryptFile";
+            this.button_DecryptFile.Size = new System.Drawing.Size(75, 23);
+            this.button_DecryptFile.TabIndex = 13;
+            this.button_DecryptFile.Text = "Decrypt File";
+            this.button_DecryptFile.UseVisualStyleBackColor = true;
+            this.button_DecryptFile.Click += new System.EventHandler(this.button_DecryptFile_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(798, 389);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.ClientSize = new System.Drawing.Size(1058, 389);
+            this.Controls.Add(this.button_DecryptFile);
+            this.Controls.Add(this.button_EncryptFile);
+            this.Controls.Add(this.tB_Decrypt);
+            this.Controls.Add(this.button_Decrypt);
+            this.Controls.Add(this.tB_Encrypt);
+            this.Controls.Add(this.button_EncryptSource);
+            this.Controls.Add(this.tB_Source);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.textBox_EncryptFile);
+            this.Controls.Add(this.textBox_playFile);
+            this.Controls.Add(this.button_playFile);
+            this.Controls.Add(this.button_Encrypt);
             this.Controls.Add(this.axWindowsMediaPlayer1);
             this.Name = "Form1";
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer1)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
         private AxWMPLib.AxWindowsMediaPlayer axWindowsMediaPlayer1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button button_Encrypt;
+        private System.Windows.Forms.Button button_playFile;
+        private System.Windows.Forms.TextBox textBox_playFile;
+        private System.Windows.Forms.TextBox textBox_EncryptFile;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox tB_Source;
+        private System.Windows.Forms.Button button_EncryptSource;
+        private System.Windows.Forms.TextBox tB_Encrypt;
+        private System.Windows.Forms.Button button_Decrypt;
+        private System.Windows.Forms.TextBox tB_Decrypt;
+        private System.Windows.Forms.Button button_EncryptFile;
+        private System.Windows.Forms.Button button_DecryptFile;
     }
 }
 
