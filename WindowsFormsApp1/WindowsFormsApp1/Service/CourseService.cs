@@ -20,6 +20,7 @@ namespace WindowsFormsApp1.Service
             IList<CourseModel> result = new List<CourseModel>();
             result.Add(new CourseModel(1, "章節1-1", "1-1"));
             result.Add(new CourseModel(2, "章節2-1", "2-1"));
+            result.Add(new CourseModel(3, "章節3-1", "3-1"));
             return result;
         }
 
